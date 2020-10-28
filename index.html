@@ -29,16 +29,16 @@
     <script>
         $(function () {
 
-            function down() {
-                console.log("鼠标按下:" + this.id)
-                $.post("/cmd", this.id, function (data, status) {
+            function down(id) {
+                console.log("鼠标按下:" + id)
+                $.post("/cmd", id, function (data, status) {
                 }).fail(function (response) {
                     console.log("鼠标按下失败:" + JSON.stringify(response))
                 });
             }
 
-            function up() {
-                console.log("鼠标抬起:" + this.id)
+            function up(id) {
+                console.log("鼠标抬起:" + id)
                 $.post("/cmd", 'stop', function (data, status) {
                 }).fail(function (response) {
                     console.log("鼠标抬起失败:" + JSON.stringify(response))
@@ -46,19 +46,21 @@
             }
 
             $(".btn").mousedown(function () {
-                down()
+                down(this.id)
             });
 
             $(".btn").mouseup(function () {
-                up()
+                up(this.id)
             });
 
-            $(".btn").ontouchstart(function () {
-                down()
+            $(".btn").bind("touchstart", function (e) {
+                console.log(e.touches);    //手指坐标
+                down(this.id)
             });
 
-            $(".btn").ontouchend(function () {
-                up()
+            $(".btn").bind("touchend", function (e) {
+                console.log(e.touches);    //手指坐标
+                up(this.id)
             });
 
             $(".btnStop").click(function () {
@@ -103,7 +105,7 @@
         <button id='down' class="btn btn-lg btn-primary glyphicon glyphicon-circle-arrow-down"></button>
     </div>
 
-    <div style="text-align: center;">
+    <div>
         <button id="video_play" class="btnVideo btn-lg btn-primary glyphicon glyphicon-play-circle"></button>
         <button id="video_stop" class="btnVideo btn-lg btn-primary glyphicon glyphicon-stop"></button>
         <img src="http://192.168.31.16:8888/?action=stream"/>
