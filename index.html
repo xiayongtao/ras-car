@@ -29,20 +29,36 @@
     <script>
         $(function () {
 
-            $(".btn").mousedown(function () {
+            function down() {
                 console.log("鼠标按下:" + this.id)
                 $.post("/cmd", this.id, function (data, status) {
                 }).fail(function (response) {
                     console.log("鼠标按下失败:" + JSON.stringify(response))
                 });
-            });
+            }
 
-            $(".btn").mouseup(function () {
+            function up() {
                 console.log("鼠标抬起:" + this.id)
                 $.post("/cmd", 'stop', function (data, status) {
                 }).fail(function (response) {
                     console.log("鼠标抬起失败:" + JSON.stringify(response))
                 });
+            }
+
+            $(".btn").mousedown(function () {
+                down()
+            });
+
+            $(".btn").mouseup(function () {
+                up()
+            });
+
+            $(".btn").ontouchstart(function () {
+                down()
+            });
+
+            $(".btn").ontouchend(function () {
+                up()
             });
 
             $(".btnStop").click(function () {
@@ -59,18 +75,17 @@
                 $.post("/cmd", this.id, function (data, status) {
                     if (this.id === 'video_play') {
                         $("#btnVideo").attr("disabled", "disabled");
-                        $("#img").attr("src", "http://192.168.31.16:8888/?action=stream");
+                        //$("#img").attr("src", "http://192.168.31.16:8888/?action=stream");
                     } else {
                         $("#btnVideo").attr("disabled", "");
-                        ("#img").attr("src", "");
+                        //  ("#img").attr("src", "");
                     }
                 }).fail(function (response) {
                     $("#btnVideo").attr("disabled", "");
                     console.log("打开失败:" + JSON.stringify(response))
-                    ("#img").attr("src", "");
+                    //("#img").attr("src", "");
                 });
             })
-
         });
     </script>
 </head>
@@ -91,7 +106,7 @@
     <div style="text-align: center;">
         <button id="video_play" class="btnVideo btn-lg btn-primary glyphicon glyphicon-play-circle"></button>
         <button id="video_stop" class="btnVideo btn-lg btn-primary glyphicon glyphicon-stop"></button>
-        <img src="#"/>
+        <img src="http://192.168.31.16:8888/?action=stream"/>
     </div>
 
 </div>
