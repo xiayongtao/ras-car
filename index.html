@@ -40,8 +40,10 @@
 
             $(".btnStop").click(function () {
                 console.log("停车:" + this.id)
-            }).fail(function (response) {
-                console.log("停车失败:" + JSON.stringify(response))
+                $.post("/cmd", this.id, function (data, status) {
+                }).fail(function (response) {
+                    console.log("停车失败:" + JSON.stringify(response))
+                });
             });
 
 
