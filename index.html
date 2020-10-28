@@ -21,10 +21,47 @@
     </style>
     <script>
         $(function () {
-            $("button").click(function () {
+
+            $(".btn").mousedown(function () {
+                console.log("鼠标按下:" + this.id)
                 $.post("/cmd", this.id, function (data, status) {
+                }).fail(function (response) {
+                    console.log("鼠标按下失败:" + JSON.stringify(response))
                 });
             });
+
+            $(".btn").mouseup(function () {
+                console.log("鼠标抬起:" + this.id)
+                $.post("/cmd", 'stop', function (data, status) {
+                }).fail(function (response) {
+                    console.log("鼠标抬起失败:" + JSON.stringify(response))
+                });
+            });
+
+            $(".btnStop").click(function () {
+                console.log("停车:" + this.id)
+            }).fail(function (response) {
+                console.log("停车失败:" + JSON.stringify(response))
+            });
+
+
+            $(".btnVideo").click(function (data, status) {
+                console.log("打开视频:" + this.id)
+                $.post("/cmd", this.id, function (data, status) {
+                    if (this.id === 'video_play') {
+                        $("#btnVideo").attr("disabled", "disabled");
+                        $("#img").attr("src", "http://192.168.31.16:8888/?action=stream");
+                    } else {
+                        $("#btnVideo").attr("disabled", "");
+                        ("#img").attr("src", "");
+                    }
+                }).fail(function (response) {
+                    $("#btnVideo").attr("disabled", "");
+                    console.log("打开失败:" + JSON.stringify(response))
+                    ("#img").attr("src", "");
+                });
+            })
+
         });
     </script>
 </head>
@@ -35,7 +72,7 @@
     </div>
     <div>
         <button id='left' class="btn btn-lg btn-primary glyphicon glyphicon-circle-arrow-left"></button>
-        <button id='stop' class="btn btn-lg btn-primary glyphicon glyphicon-stop"></button>
+        <button id='stop' class="btnStop btn-lg btn-primary glyphicon glyphicon-stop"></button>
         <button id='right' class="btn btn-lg btn-primary glyphicon glyphicon-circle-arrow-right"></button>
     </div>
     <div>
@@ -43,8 +80,9 @@
     </div>
 
     <div style="text-align: center;">
-        <button id="video" class="btn btn-lg btn-primary glyphicon glyphicon-play-circle"></button>
-        <img src="http://192.168.31.16:8888/?action=stream"/>
+        <button id="video_play" class="btnVideo btn-lg btn-primary glyphicon glyphicon-play-circle"></button>
+        <button id="video_stop" class="btnVideo btn-lg btn-primary glyphicon glyphicon-stop"></button>
+        <img src=""/>
     </div>
 
 </div>
