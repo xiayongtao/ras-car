@@ -214,11 +214,10 @@ def asr_run(n):
         action(result)
         time.sleep(0.01)
 
-
 GPIO.cleanup()
 init()
-asr = threading.Thread(target=asr_run, args=("asr",))
-asr.start()
+
+threading.Thread(target=asr_run, args=("asr",)).start()
 run(host="0.0.0.0", port="8080")
 GPIO.cleanup()
-asr.stop()
+
